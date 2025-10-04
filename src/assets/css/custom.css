@@ -1,0 +1,280 @@
+@layer components {
+@theme {
+  --color-green-500: #0f8837;   /* ✅ Green */
+  --color-green-600: #044a1b;   /* Darker Green for hover */
+  
+  --color-danger-500: #d2344a;  /* ✅ Red for Danger */
+  --color-danger-600: #b02a3b;  /* Darker Red for hover */
+  
+  --color-disable-600: #899296; /* ✅ Gray for Disabled */
+}
+/* ---------------------spinner------------------------- */
+@keyframes spinner-glow {
+  0%   { opacity: 0.2; transform: scale(0.8) translateX(160%); }
+  50%  { opacity: 1;   transform: scale(1.3) translateX(160%); }
+  100% { opacity: 0.2; transform: scale(0.8) translateX(160%); }
+}
+
+.animate-spinner-glow {
+  animation: spinner-glow 0.8s linear infinite; /* ⏩ Faster */
+}
+
+
+
+  /* -------------------header------------- */
+  
+header {
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
+}
+header.fixed {
+    /* background: #153d78; */
+    background: #535252ba;
+        border-radius: 0 10px 0 0;
+}
+.menu-item-inactive {
+    color: #f3f6ff;
+    letter-spacing: 1px;
+    font-size: 15px;
+    font-weight: 600;
+        background: #002234a6;
+        margin-bottom: 5px;;
+}
+aside.fixed {
+    /* background: linear-gradient(177deg, #153d78, #000634); */
+        border-radius: 10px 0 0 10px;
+            background: #6a6a6a;
+}
+.login-info {
+    border-bottom: 1px solid gray;
+    padding: 0 0 10px;
+}
+.menu-item-icon-inactive {
+    color: #e8edf7;
+    padding: 5px;
+    background: #2b0f1061;
+    border-radius: 5px;
+}
+.btn-header {
+    background: #d2344a;
+    padding: 2px 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    color: #fff;
+}
+.btns {
+    padding: 2px 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    color: #fff;
+}
+.btn-one{
+    background: #d2344a;
+      margin:0 10px;
+}
+    .btn-two {
+    background: #31373a;}
+
+span.acount_balance .dis {
+  color: #d2344a;
+}
+
+
+span.acount_balance {
+    color: #fff;
+    margin: 0 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    background: #31373a;
+    margin: auto;
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.gap-5 {
+    gap: calc(var(--spacing) * 5);
+}
+
+@layer utilities {
+  .menu-item-icon-active {
+    @apply p-[5px] bg-[#022342] rounded-[5px] text-[#e8edf7];
+  }
+}
+/* -----------------------footer------------------- */
+footer.fixed {
+    /* background: #153d78; */
+    background:#7e7e7f;
+    border-radius: 0 0 10px;
+    color: #fff;
+       width: -webkit-fill-available;
+    text-align: center;
+}
+.btn-signout {
+  background: #d2344a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    
+}
+.light_dark {
+    margin: 25px 10px 0;
+    background: #c4c4c4;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    margin: auto;
+    margin-bottom: 5px;
+}
+  /* --------- Right Section --------- */
+.menu-dropdown-item {
+  gap: calc(var(--spacing) * 1) !important;
+ }
+  .banner_images {
+    /* border: 16px solid #eaeaea;
+    border-radius: 5px; */
+    margin: auto;
+        margin-left: 60px;
+}
+.menu-dropdown-item-inactive {
+    letter-spacing: 1px;
+    font-size: 13px !important;
+    margin-left: 5px;
+        padding-top: 5px !important;
+}
+.menu-item-active,.menu-item-icon-active {
+    color: #d62827 !important;
+}
+
+
+.image_banner {
+    margin: 10px 0;
+    border: 10px solid #eaeaea;
+    border-radius: 5px;
+}
+  .right {
+    @apply flex-1 flex items-center justify-center text-white relative overflow-hidden;
+      background-image: linear-gradient(to right, #487084, #0a1114, #043b55);
+      border-top-left-radius: 100% 100%;
+      border-bottom-left-radius: 100% 100%;
+      opacity: 0;
+      transform: translateX(50px);
+      animation: slideInRight 1s forwards 0.5s;
+          margin-left: 50px;
+      }
+
+  /* Shimmer overlay */
+  .right::before {
+    content: "";
+    @apply absolute top-[-50%] left-[-50%];
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 6s infinite linear;
+    z-index: 0;
+  }
+h1.heading_sign {
+    font-size: 50px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.input-box {
+    /* margin: 20px 0; */
+    background-color: #fff;
+    width: 100%;
+     position: relative;
+         color: #4f4848;
+    /* display: inline-flex
+; */
+    padding: 10px;
+}
+.form-group.imput-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+        margin: 20px 0;
+}
+span.input_icon {
+    padding: 10px;
+    background: #fff;
+}
+  /* Form box */
+  .form-box {
+    @apply bg-transparent  w-[450px] text-center relative z-10;
+   
+  }
+
+  .form-box h2 {
+    @apply  text-3xl font-bold text-white;
+  }
+
+  .form-box p {
+    @apply  text-sm;
+  }
+
+  
+
+  .input-box input:focus {
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    transform: scale(1.02);
+  }
+
+  /* Button */
+  .btn {
+    @apply w-100 py-3  text-white rounded-md text-base cursor-pointer mb-5 transition;
+    /* opacity: 0;
+    animation: fadeIn 0.5s forwards 2.6s; */
+    background-color: #216e92;
+  }
+  .btn:hover {
+    @apply bg-red-600;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+.menu-item-inactive:hover {
+  background-color: #404143 !important;
+  color: #fff !important;
+}
+.group:hover .menu-item-icon-inactive {
+  color: #fff !important;
+}
+/* --------- Animations --------- */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes shimmer {
+  0%   { transform: rotate(45deg) translateX(-100%); }
+  100% { transform: rotate(45deg) translateX(100%); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+}
+
+/* ------------------------reporting-components------------------------ */
+.panel_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #b9b9b9;
+    margin-bottom: 10px;
+}
+h3.total_user {
+    background: #00a63e;
+    padding: 0 4px;
+    border-radius: 5px;
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: 14px;
+}
