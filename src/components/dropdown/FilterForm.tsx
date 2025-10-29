@@ -1,85 +1,114 @@
-import type { FilterFormProps } from "../../entities/modals/component/dropdown";
-export default function FilterFormProps({
-  // name,
-  level1,
-  level2,
-  orderType,
-  status,
-  // setName,
-  setLevel1,
-  setLevel2,
-  setOrderType,
-  setStatus,
-}:FilterFormProps){
-    return (
-    <>
-      {/* Name */}
-      {/* <div>
-        <label className="block text-sm font-medium mb-1">Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full border rounded-md px-3 py-2 text-sm bg-white"
-          placeholder="Enter name"
-        />
-      </div> */}
+import { useState, useEffect } from "react";
+import { Report } from "../../entities/apis/mainapi";
 
-      {/* Level 1 */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Level 1</label>
-        <select
-          value={level1}
-          onChange={(e) => setLevel1(e.target.value)}
-          className="w-full border rounded-md px-3 py-2 text-sm bg-white"
-        >
-          <option value="">ALL</option>
-          <option value="ACHCHI">ACHCHI</option>
-          <option value="AHPREPAID">AHPREPAID PVT. LTD.</option>
-        </select>
-      </div>
 
-      {/* Level 2 */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Level 2</label>
-        <select
-          value={level2}
-          onChange={(e) => setLevel2(e.target.value)}
-          className="w-full border rounded-md px-3 py-2 text-sm bg-white"
-        >
-          <option value="">ALL</option>
-          <option value="168">168 Cell Phone Repair</option>
-          <option value="3D">3D Wireless LLC</option>
-        </select>
-      </div>
+ 
+interface dropdownOption{
+  name: string;
+  id: number;   
+}
 
-      {/* Order Type */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Order Type</label>
-        <select
-          value={orderType}
-          onChange={(e) => setOrderType(e.target.value)}
-          className="w-full border rounded-md px-3 py-2 text-sm bg-white"
-        >
-          <option value="">ALL</option>
-          <option value="Activation">Activation</option>
-          <option value="Recharge">Recharge</option>
-        </select>
-      </div>
+interface FilterField {
+  key: string;
+  label: string;
+   className?: string;
+  parentKey?: string | null;
+  type: "dropdown" | "input" | "date";
+}
 
-      {/* Status */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Status</label>
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className="w-full border rounded-md px-3 py-2 text-sm bg-white"
-        >
-          <option value="">ALL</option>
-          <option value="Pending">Pending</option>
-          <option value="Completed">Completed</option>
-        </select>
-      </div>
-    </>
-  );
+interface FilterFormProps {
+  config: FilterField[];
+  filters: Record<string, any>;
+  setFilters: (filters: Record<string, any>) => void;
+}
+
+
+/* 🔹 Reusable Dropdown Component */
+const Dropdown = ({ label, value, onChange, options, disabled }: {label: string; value:any;  className?: string;onChange:(val: number) => void;
+options: dropdownOption[];
+  disabled?: boolean;
+}) => (
+  <div>
+    <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+      {label}
+    </label>
+    <select
+      className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      disabled={disabled}
+    >
+      <option value="">Select {label}</option>
+      {options.map((opt:dropdownOption) => (
+          <option key={opt.id} value={opt.id} >
+            {opt.name}
+          </option>
+        ))}
+    </select>
+  </div>
+);
+export default function FilterForm({
+  config,
+  filters,
+  setFilters,
+ }: FilterFormProps) {
+const [optionsMap, setOptionsMap] = useState<Record<string, dropdownOption[]>>({});
+
+
+
+
+useEffect(() => {
+  config.forEach(async (field, index) =>{
+    if(field.type === "dropdown") {
+      const parentValue = field.parentKey ? filters[field.parentKey] : 0;
+      if(field.parentKey && !parentValue) return;
+
+      const levelIndex = field.parentKey ? index : 0;
+      const res = await Report.getDropdownData(levelIndex, parentValue || 0);
+      const mapped = res.map((r: any) => ({ id: r.id, name: r.name}));
+
+      setOptionsMap((prev) => ({...prev, [field.key]: mapped}));
+      }
+    });
+  }, [config, filters]);
+
+
+
+return (
+  <>
+  {config.map((field) => {
+      if(field.type === "dropdown") {
+        const opts = optionsMap[field.key] || [];
+        const disabled = !!field.parentKey && !filters[field.parentKey];
+   
+return ( <Dropdown
+      key={field.key}
+        label={field.label}
+        className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+        value={filters[field.key]}
+        onChange={(val) => setFilters({...filters, [field.key]:val})
+      }
+        options={opts}
+        disabled={disabled}
+      />
+          );
+        }
+  if(field.type === "input"){
+      return (
+    <div key={field.key}>
+      <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{field.label}</label>
+      <input type="text" className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 focus-ring-2 focus:ring-blue-500 outline-none"
+      value={filters[field.key] || ""}
+      onChange={(e) => 
+        setFilters({...filters, [field.key]: e.target.value})
+      } 
+      placeholder={`Enter ${field.label}`} />
+
+    </div>
+    );
+  }
+  return null;
+  })}
+  </>
+);
 }

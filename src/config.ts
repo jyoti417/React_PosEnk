@@ -17,6 +17,7 @@ interface Endpoints {
   }
   Report: {
     RechargeReport: string;
+    ActivationLedger: string; 
   };
   Emida: {
     plans: string;
@@ -42,8 +43,9 @@ const endpoints: Endpoints = {
   Status:{
     SinglePagesAccess:"/GetUsersPageAccess"
   },
-  Report: {
+ Report: {
     RechargeReport: "/Reports/RechargeReport",
+    ActivationLedger: "/Reports/GetActivationLedger", // ✅ Added here
   },
   
   Emida:{

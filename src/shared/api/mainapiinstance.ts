@@ -86,10 +86,13 @@ export class mainApiInstanceService {
   };
 
   // report
-  public Report = {
-    getrechargereport: () =>
-      this.request<Report.ReportReportResponse>(config.endpoints.Report.RechargeReport),
-  };
+public Report = {
+  getActivationLedger: (params: Report.ActivationLedgerRequest) =>
+    this.request<Report.ActivationLedgerResponse>(
+      `${config.endpoints.Report.ActivationLedger}?${new URLSearchParams(params as any).toString()}`
+    ),
+};
+
 
   //emida recharge
 public emRecharge = {

@@ -48,7 +48,7 @@ export default function ExportButton<T extends object>({
       disabled={!data || data.length === 0}
       className="bg-[#d2344a] text-white px-4 py-2 w-full rounded-md text-sm hover:bg-[#9e3543] disabled:opacity-50 transition"
     >
-      Export to Excel
+      Export to Excel 
     </button>
   );
 }
